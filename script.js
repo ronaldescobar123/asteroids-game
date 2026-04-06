@@ -3,7 +3,11 @@ const ctx = canvas.getContext("2d");
 
 const menu = document.getElementById("menu");
 const startButton = document.getElementById("start");
-
+const scoreButton = document.getElementById('score');           
+const scoreModal = document.getElementById('score-modal');
+const gamesPlayedSpan = document.getElementById('games-played');
+const totalPointsSpan = document.getElementById('total-points');
+const closeScoreButton = document.getElementById('close-score');
 let asteroids = [];
 
 function crearAsteroide() {
@@ -17,11 +21,9 @@ function crearAsteroide() {
     rotationSpeed: (Math.random() - 0.5) * 0.08,
   };
 }
-
 for (let i = 0; i < 8; i++) {
   asteroids.push(crearAsteroide());
 }
-
 function dibujarAsteroide(ast) {
   ctx.save();
   ctx.translate(ast.x, ast.y);
@@ -49,7 +51,6 @@ function dibujarAsteroide(ast) {
   ctx.stroke();
   ctx.restore();
 }
-
 let juegoIniciado = false;
 
 function gameLoop() {
@@ -68,20 +69,30 @@ function gameLoop() {
 
     dibujarAsteroide(ast);
   });
-
   if (juegoIniciado) {
     ctx.fillStyle = "#00ffff";
     ctx.font = "30px Courier New";
     ctx.textAlign = "center";
     ctx.fillText("JUEGO INICIADO", canvas.width / 2, canvas.height / 2);
   }
-
   requestAnimationFrame(gameLoop);
 }
-
 gameLoop();
-
 startButton.addEventListener("click", () => {
   menu.style.display = "none";
   juegoIniciado = true;
+});
+scoreButton.addEventListener('click', () => {
+    db.get('playerStats').then(doc => {
+        gamesPlayedSpan.textContent = doc.gamesPlayed;
+        totalPointsSpan.textContent = doc.totalPoints;
+        scoreModal.style.display = 'flex';
+    }).catch(() => {
+        gamesPlayedSpan.textContent = '0';
+        totalPointsSpan.textContent = '0';
+        scoreModal.style.display = 'flex';
+    });
+});
+closeScoreButton.addEventListener('click', () => {
+    scoreModal.style.display = 'none';
 });
