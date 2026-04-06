@@ -10,6 +10,15 @@
     <div id="menu">
       <h1>ASTEROIDS</h1>
       <button id="start">INICIAR JUEGO</button>
+      <button id="score">SCORE</button>
+    
+      <div id="score-modal" class="modal">
+        <div class="modal-content">
+            <h2>ESTADÍSTICAS</h2>
+            <p>Juegos jugados: <span id="games-played">0</span></p>
+            <p>Puntos acumulados: <span id="total-points">0</span></p>
+            <button id="close-score">CERRAR</button>
+        </div>
     </div>
 
     <canvas id="canvas" width="800" height="600"></canvas>
