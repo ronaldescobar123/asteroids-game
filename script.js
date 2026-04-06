@@ -10,6 +10,22 @@ const totalPointsSpan = document.getElementById('total-points');
 const closeScoreButton = document.getElementById('close-score');
 let asteroids = [];
 
+let db = new PouchDB('asteroids_db');
+
+let stats = {
+    _id: 'playerStats',
+    gamesPlayed: 0,
+    totalPoints: 0
+};
+
+db.get('playerStats').then(doc => {
+    stats = doc;
+}).catch(err => {
+    if (err.status === 404) {
+        db.put(stats);
+    }
+});
+
 function crearAsteroide() {
   return {
     x: Math.random() * canvas.width,
