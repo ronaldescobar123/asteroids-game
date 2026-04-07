@@ -10,6 +10,8 @@ const totalPointsSpan = document.getElementById('total-points');
 const closeScoreButton = document.getElementById('close-score');
 let asteroids = [];
 
+let balas = [];
+
 let db = new PouchDB('asteroids_db');
 
 let stats = {
@@ -86,18 +88,65 @@ function gameLoop() {
     dibujarAsteroide(ast);
   });
   if (juegoIniciado) {
-    ctx.fillStyle = "#00ffff";
-    ctx.font = "30px Courier New";
-    ctx.textAlign = "center";
-    ctx.fillText("JUEGO INICIADO", canvas.width / 2, canvas.height / 2);
+    
+    nave.angle += nave.rotation;
+
+    nave.x += Math.cos(nave.angle) * nave.speed;
+    nave.y += Math.sin(nave.angle) * nave.speed;
+
+    if (nave.x < 0) nave.x = canvas.width;
+    if (nave.x > canvas.width) nave.x = 0;
+    if (nave.y < 0) nave.y = canvas.height;
+    if (nave.y > canvas.height) nave.y = 0;
+
+    dibujarNave();
+
+    balas.forEach((bala) => {
+      bala.x += Math.cos(bala.angle) * bala.speed;
+      bala.y += Math.sin(bala.angle) * bala.speed;
+
+      ctx.fillStyle = "#fff";
+      ctx.beginPath();
+      ctx.arc(bala.x, bala.y, 2, 0, Math.PI * 2);
+      ctx.fill();
+    });
   }
   requestAnimationFrame(gameLoop);
 }
+
+function dibujarNave() {
+  ctx.save();
+  ctx.translate(nave.x, nave.y);
+  ctx.rotate(nave.angle);
+
+  ctx.strokeStyle = "#00ffff";
+  ctx.lineWidth = 2;
+
+  ctx.beginPath();
+  ctx.moveTo(15, 0);
+  ctx.lineTo(-10, -10);
+  ctx.lineTo(-5, 0);
+  ctx.lineTo(-10, 10);
+  ctx.closePath();
+
+  ctx.stroke();
+  ctx.restore();
+}
+
+let nave = {
+  x: canvas.width / 2,
+  y: canvas.height / 2,
+  angle: 0,
+  speed: 0,
+  rotation: 0
+};
+
 gameLoop();
 startButton.addEventListener("click", () => {
   menu.style.display = "none";
   juegoIniciado = true;
 });
+
 scoreButton.addEventListener('click', () => {
     db.get('playerStats').then(doc => {
         gamesPlayedSpan.textContent = doc.gamesPlayed;
@@ -111,4 +160,41 @@ scoreButton.addEventListener('click', () => {
 });
 closeScoreButton.addEventListener('click', () => {
     scoreModal.style.display = 'none';
+});
+
+
+document.addEventListener("keydown", (e) => {
+  if (e.key === "ArrowLeft") {
+    nave.rotation = -0.05;
+  }
+  if (e.key === "ArrowRight") {
+    nave.rotation = 0.05;
+  }
+  if (e.key === "ArrowUp") {
+    nave.speed = 2;
+  }
+});
+
+document.addEventListener("keyup", (e) => {
+  if (e.key === "ArrowLeft" || e.key === "ArrowRight") {
+    nave.rotation = 0;
+  }
+  if (e.key === "ArrowUp") {
+    nave.speed = 0;
+  }
+});
+
+function disparar() {
+  balas.push({
+    x: nave.x,
+    y: nave.y,
+    angle: nave.angle,
+    speed: 5
+  });
+}
+
+document.addEventListener("keydown", (e) => {
+  if (e.code === "Space") {
+    disparar();
+  }
 });
