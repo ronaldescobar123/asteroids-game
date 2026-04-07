@@ -77,3 +77,13 @@ button:hover {
     font-size: 22px;
     padding: 12px 40px;
 }
+
+canvas {
+  position: relative;
+  z-index: 1;
+}
+
+#menu {
+  position: absolute;
+  z-index: 10;
+}
