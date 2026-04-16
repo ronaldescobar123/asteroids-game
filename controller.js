@@ -1,3 +1,6 @@
+import { asteroids, balas, nave, inicializarAsteroides, disparar } from "./model.js";
+import { limpiarCanvas, dibujarAsteroide, dibujarNave, dibujarBalas } from "./view.js";
+
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
