@@ -51,3 +51,11 @@ export function disparar() {
     speed: 5
   });
 }
+
+export function hayColision(bala, asteroide) {
+  const dx = bala.x - asteroide.x;
+  const dy = bala.y - asteroide.y;
+  const distancia = Math.sqrt(dx * dx + dy * dy);
+
+  return distancia < asteroide.size;
+}
