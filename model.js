@@ -59,3 +59,12 @@ export function hayColision(bala, asteroide) {
 
   return distancia < asteroide.size;
 }
+
+export function detectarColision(obj1, obj2, radio) {
+  const dx = obj1.x - obj2.x;
+  const dy = obj1.y - obj2.y;
+
+  const distancia = Math.sqrt(dx * dx + dy * dy);
+
+  return distancia < radio;
+}
