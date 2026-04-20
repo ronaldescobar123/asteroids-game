@@ -12,6 +12,7 @@ const gamesPlayedSpan = document.getElementById('games-played');
 const totalPointsSpan = document.getElementById('total-points');
 const closeScoreButton = document.getElementById('close-score');
 const maxScoreSpan = document.getElementById('max-score');
+const lastScoreSpan = document.getElementById('last-score');
 
 inicializarAsteroides(canvas);
 
@@ -56,7 +57,7 @@ function gameLoop() {
       db.get('playerStats').then(doc => {
         doc.gamesPlayed += 1;
         doc.totalPoints += puntosActuales;
-
+        doc.lastScore = puntosActuales;
       if (puntosActuales > doc.maxScore) {
         doc.maxScore = puntosActuales;
       }
@@ -99,11 +100,13 @@ scoreButton.addEventListener('click', () => {
         gamesPlayedSpan.textContent = doc.gamesPlayed;
         totalPointsSpan.textContent = doc.totalPoints;
         maxScoreSpan.textContent = doc.maxScore;
+        lastScoreSpan.textContent = doc.lastScore;
         scoreModal.style.display = 'flex';
     }).catch(() => {
         gamesPlayedSpan.textContent = '0';
         totalPointsSpan.textContent = '0';
         maxScoreSpan.textContent = '0';
+        lastScoreSpan.textContent = '0';
         scoreModal.style.display = 'flex';
     });
 });
