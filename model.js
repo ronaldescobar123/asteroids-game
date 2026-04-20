@@ -14,7 +14,9 @@ export let db = new PouchDB('asteroids_db');
 export let stats = {
     _id: 'playerStats',
     gamesPlayed: 0,
-    totalPoints: 0
+    totalPoints: 0,
+    maxScore: 0,
+    lastScore: 0
 };
 
 db.get('playerStats').then(doc => {
