@@ -51,6 +51,17 @@ function gameLoop() {
       console.log("La nave chocó con un asteroide");
       juegoIniciado = false;
       menu.style.display = "block";
+
+      db.get('playerStats').then(doc => {
+        doc.gamesPlayed += 1;
+        doc.totalPoints += puntosActuales;
+
+      if (puntosActuales > doc.maxScore) {
+        doc.maxScore = puntosActuales;
+      }
+
+      return db.put(doc);
+      });
     }
   });
 
