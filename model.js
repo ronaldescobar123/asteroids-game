@@ -76,3 +76,7 @@ export function detectarColision(obj1, obj2, radio) {
 
   return distancia < radio;
 }
+
+export function sumarPunto() {
+  puntosActuales++;
+}

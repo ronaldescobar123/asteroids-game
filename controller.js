@@ -1,4 +1,4 @@
-import { asteroids, balas, nave, inicializarAsteroides, disparar, db, hayColision, detectarColision, puntosActuales } from "./model.js";
+import { asteroids, balas, nave, inicializarAsteroides, disparar, db, hayColision, detectarColision, puntosActuales, sumarPunto } from "./model.js";
 import { limpiarCanvas, dibujarAsteroide, dibujarNave, dibujarBalas, dibujarPuntaje } from "./view.js";
 
 const canvas = document.getElementById("canvas");
@@ -69,18 +69,23 @@ function gameLoop() {
 
     dibujarNave(ctx, nave);
 
-    balas.forEach((bala, i) => {
+    for (let i = balas.length - 1; i >= 0; i--) {
+      let bala = balas[i];
+
       bala.x += Math.cos(bala.angle) * bala.speed;
       bala.y += Math.sin(bala.angle) * bala.speed;
 
-      asteroids.forEach((ast, j) => {
-        if (hayColision(bala, ast)){
-          asteroids.splice(j, 1); // elimina asteroide
-          balas.splice(i, 1);     // elimina bala
-          puntosActuales++;
+      for (let j = asteroids.length - 1; j >= 0; j--) {
+        let ast = asteroids[j];
+
+        if (hayColision(bala, ast)) {
+          asteroids.splice(j, 1);
+          balas.splice(i, 1);
+          sumarPunto();
+          break; // importante: salir después de colisión
         }
-      });
-    });
+      }
+    }
 
     dibujarBalas(ctx, balas);
   }
