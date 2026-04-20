@@ -21,7 +21,12 @@ export let stats = {
 };
 
 db.get('playerStats').then(doc => {
+    // asegurar que existan los campos nuevos
+    if (doc.maxScore === undefined) doc.maxScore = 0;
+    if (doc.lastScore === undefined) doc.lastScore = 0;
+
     stats = doc;
+    return db.put(doc); // guarda los cambios
 }).catch(err => {
     if (err.status === 404) {
         db.put(stats);
