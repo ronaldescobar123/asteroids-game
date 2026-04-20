@@ -1,6 +1,7 @@
 export let asteroids = [];
 export let balas = [];
 export let puntosActuales = 0;
+export let nivelDificultad = 1;
 
 export let nave = {
   x: 400,
@@ -38,8 +39,8 @@ export function crearAsteroide(canvas) {
     x: Math.random() * canvas.width,
     y: Math.random() * canvas.height,
     size: 18 + Math.random() * 28,
-    vx: (Math.random() - 0.5) * 3,
-    vy: (Math.random() - 0.5) * 3,
+    vx: (Math.random() - 0.5) * 3 * nivelDificultad,
+    vy: (Math.random() - 0.5) * 3 * nivelDificultad,
     angle: Math.random() * Math.PI * 2,
     rotationSpeed: (Math.random() - 0.5) * 0.08,
   };
@@ -79,4 +80,12 @@ export function detectarColision(obj1, obj2, radio) {
 
 export function sumarPunto() {
   puntosActuales++;
+}
+
+export function aumentarDificultad() {
+  nivelDificultad += 0.1;
+}
+
+export function agregarAsteroide(canvas) {
+  asteroids.push(crearAsteroide(canvas));
 }
