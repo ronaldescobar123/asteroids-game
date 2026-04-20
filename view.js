@@ -58,3 +58,9 @@ export function dibujarBalas(ctx, balas) {
     ctx.fill();
   });
 }
+
+export function dibujarPuntaje(ctx, puntos) {
+  ctx.fillStyle = "#fff";
+  ctx.font = "20px Courier New";
+  ctx.fillText("PUNTOS: " + puntos, 20, 30);
+}

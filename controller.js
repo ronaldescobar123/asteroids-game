@@ -1,5 +1,5 @@
 import { asteroids, balas, nave, inicializarAsteroides, disparar, db, hayColision, detectarColision, puntosActuales } from "./model.js";
-import { limpiarCanvas, dibujarAsteroide, dibujarNave, dibujarBalas } from "./view.js";
+import { limpiarCanvas, dibujarAsteroide, dibujarNave, dibujarBalas, dibujarPuntaje } from "./view.js";
 
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
@@ -33,6 +33,7 @@ function gameLoop() {
   });
 
   if (juegoIniciado) {
+    dibujarPuntaje(ctx, puntosActuales);
     nave.angle += nave.rotation;
 
     nave.x += Math.cos(nave.angle) * nave.speed;
