@@ -75,11 +75,11 @@ function gameLoop() {
   requestAnimationFrame(gameLoop);
 }
 
-
 gameLoop();
 startButton.addEventListener("click", () => {
   menu.style.display = "none";
   juegoIniciado = true;
+  puntosActuales = 0;
 });
 
 scoreButton.addEventListener('click', () => {
