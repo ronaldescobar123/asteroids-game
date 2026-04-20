@@ -11,6 +11,7 @@ const scoreModal = document.getElementById('score-modal');
 const gamesPlayedSpan = document.getElementById('games-played');
 const totalPointsSpan = document.getElementById('total-points');
 const closeScoreButton = document.getElementById('close-score');
+const maxScoreSpan = document.getElementById('max-score');
 
 inicializarAsteroides(canvas);
 
@@ -97,6 +98,7 @@ scoreButton.addEventListener('click', () => {
     db.get('playerStats').then(doc => {
         gamesPlayedSpan.textContent = doc.gamesPlayed;
         totalPointsSpan.textContent = doc.totalPoints;
+        maxScoreSpan.textContent = doc.maxScore;
         scoreModal.style.display = 'flex';
     }).catch(() => {
         gamesPlayedSpan.textContent = '0';
