@@ -103,6 +103,7 @@ scoreButton.addEventListener('click', () => {
     }).catch(() => {
         gamesPlayedSpan.textContent = '0';
         totalPointsSpan.textContent = '0';
+        maxScoreSpan.textContent = '0';
         scoreModal.style.display = 'flex';
     });
 });
