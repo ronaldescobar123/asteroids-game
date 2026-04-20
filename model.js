@@ -1,5 +1,6 @@
 export let asteroids = [];
 export let balas = [];
+export let puntosActuales = 0;
 
 export let nave = {
   x: 400,

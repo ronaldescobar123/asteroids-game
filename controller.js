@@ -1,4 +1,4 @@
-import { asteroids, balas, nave, inicializarAsteroides, disparar, db, hayColision, detectarColision } from "./model.js";
+import { asteroids, balas, nave, inicializarAsteroides, disparar, db, hayColision, detectarColision, puntosActuales } from "./model.js";
 import { limpiarCanvas, dibujarAsteroide, dibujarNave, dibujarBalas } from "./view.js";
 
 const canvas = document.getElementById("canvas");
@@ -47,7 +47,7 @@ function gameLoop() {
     const colision = detectarColision(nave, ast, ast.size);
 
     if (colision) {
-      console.log("💥 La nave chocó con un asteroide");
+      console.log("La nave chocó con un asteroide");
       juegoIniciado = false;
       menu.style.display = "block";
     }
@@ -63,6 +63,7 @@ function gameLoop() {
         if (hayColision(bala, ast)){
           asteroids.splice(j, 1); // elimina asteroide
           balas.splice(i, 1);     // elimina bala
+          puntosActuales++;
         }
       });
     });
