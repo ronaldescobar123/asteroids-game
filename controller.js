@@ -1,4 +1,4 @@
-import { asteroids, balas, nave, inicializarAsteroides, disparar, db, hayColision, detectarColision, puntosActuales, sumarPunto } from "./model.js";
+import { asteroids, balas, nave, inicializarAsteroides, disparar, db, hayColision, detectarColision, puntosActuales, sumarPunto, aumentarDificultad, agregarAsteroide } from "./model.js";
 import { limpiarCanvas, dibujarAsteroide, dibujarNave, dibujarBalas, dibujarPuntaje } from "./view.js";
 
 const canvas = document.getElementById("canvas");
@@ -82,7 +82,9 @@ function gameLoop() {
           asteroids.splice(j, 1);
           balas.splice(i, 1);
           sumarPunto();
-          break; // importante: salir después de colisión
+          aumentarDificultad();
+          agregarAsteroide(canvas);
+          break; 
         }
       }
     }
