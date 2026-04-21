@@ -89,3 +89,57 @@ export function aumentarDificultad() {
 export function agregarAsteroide(canvas) {
   asteroids.push(crearAsteroide(canvas));
 }
+export async function initStats() {
+  try {
+    const doc = await db.get('playerStats');
+    if (doc.maxScore === undefined) doc.maxScore = 0;
+    if (doc.lastScore === undefined) doc.lastScore = 0;
+    await db.put(doc).catch(() => {});
+    return doc;
+  } catch (err) {
+    if (err.status === 404) {
+      const newStats = {
+        _id: 'playerStats',
+        gamesPlayed: 0,
+        totalPoints: 0,
+        maxScore: 0,
+        lastScore: 0
+      };
+      await db.put(newStats);
+      return newStats;
+    }
+    throw err;
+  }
+}
+export async function updateStats(score) {
+  try {
+    const doc = await db.get('playerStats');
+    doc.gamesPlayed = (doc.gamesPlayed || 0) + 1;
+    doc.totalPoints = (doc.totalPoints || 0) + (score || 0);
+    doc.lastScore = score || 0;
+    if (!doc.maxScore || (score || 0) > doc.maxScore) doc.maxScore = score || 0;
+    await db.put(doc);
+    return doc;
+  } catch (err) {
+    if (err.status === 404) {
+      const newStats = {
+        _id: 'playerStats',
+        gamesPlayed: 1,
+        totalPoints: score || 0,
+        maxScore: score || 0,
+        lastScore: score || 0
+      };
+      await db.put(newStats);
+      return newStats;
+    }
+    throw err;
+  }
+}
+export async function getStats() {
+  try {
+    const doc = await db.get('playerStats');
+    return doc;
+  } catch {
+    return { gamesPlayed: 0, totalPoints: 0, maxScore: 0, lastScore: 0 };
+  }
+}
