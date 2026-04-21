@@ -1,4 +1,4 @@
-import { asteroids, balas, nave, inicializarAsteroides, disparar, db, hayColision, detectarColision, puntosActuales, sumarPunto, aumentarDificultad, agregarAsteroide } from "./model.js";
+import { asteroids, balas, nave, inicializarAsteroides, disparar, db, hayColision, detectarColision, puntosActuales, sumarPunto, aumentarDificultad, agregarAsteroide, initStats, getStats, updateStats } from "./model.js";
 import { limpiarCanvas, dibujarAsteroide, dibujarNave, dibujarBalas, dibujarPuntaje } from "./view.js";
 
 const canvas = document.getElementById("canvas");
