@@ -64,19 +64,18 @@ export function dibujarPuntaje(ctx, puntos) {
   ctx.font = "20px Courier New";
   ctx.fillText("PUNTOS: " + puntos, 20, 30);
 }
-export function dibujarEstrellas(ctx, canvas, count = 150) {
-  ctx.save();
+export function dibujarEstrellas(ctx, canvas, count = 200) {
   ctx.fillStyle = "#000";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  ctx.fillStyle = "#ffffff";
   for (let i = 0; i < count; i++) {
     const x = Math.random() * canvas.width;
     const y = Math.random() * canvas.height;
-    const r = Math.random() * 1.2;
+    const r = Math.random() * 1.5;
+    const alpha = Math.random();
+    ctx.fillStyle = `rgba(255,255,255,${alpha})`;
     ctx.beginPath();
     ctx.arc(x, y, r, 0, Math.PI * 2);
     ctx.fill();
   }
-  ctx.restore();
 }
