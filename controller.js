@@ -18,6 +18,8 @@ inicializarAsteroides(canvas);
 
 let juegoIniciado = false;
 
+initStats().catch(err => console.error('initStats error:', err));
+
 function gameLoop() {
   limpiarCanvas(ctx, canvas);
 
@@ -53,20 +55,9 @@ function gameLoop() {
       console.log("La nave chocó con un asteroide");
       juegoIniciado = false;
       menu.style.display = "block";
-
-      db.get('playerStats').then(doc => {
-        doc.gamesPlayed += 1;
-        doc.totalPoints += puntosActuales;
-        doc.lastScore = puntosActuales;
-      if (puntosActuales > doc.maxScore) {
-        doc.maxScore = puntosActuales;
+      updateStats(puntosActuales).catch(err => console.error('updateStats error:', err));
       }
-
-      return db.put(doc);
-      });
-    }
   });
-
     dibujarNave(ctx, nave);
 
     for (let i = balas.length - 1; i >= 0; i--) {
@@ -101,21 +92,21 @@ startButton.addEventListener("click", () => {
   juegoIniciado = true;
   puntosActuales = 0;
 });
-
-scoreButton.addEventListener('click', () => {
-    db.get('playerStats').then(doc => {
-        gamesPlayedSpan.textContent = doc.gamesPlayed;
-        totalPointsSpan.textContent = doc.totalPoints;
-        maxScoreSpan.textContent = doc.maxScore;
-        lastScoreSpan.textContent = doc.lastScore;
-        scoreModal.style.display = 'flex';
-    }).catch(() => {
-        gamesPlayedSpan.textContent = '0';
-        totalPointsSpan.textContent = '0';
-        maxScoreSpan.textContent = '0';
-        lastScoreSpan.textContent = '0';
-        scoreModal.style.display = 'flex';
-    });
+scoreButton.addEventListener('click', async () => {
+    try {
+      const doc = await getStats();
+      gamesPlayedSpan.textContent = doc.gamesPlayed;
+      totalPointsSpan.textContent = doc.totalPoints;
+      maxScoreSpan.textContent = doc.maxScore;
+      lastScoreSpan.textContent = doc.lastScore;
+      scoreModal.style.display = 'flex';
+    } catch {
+      gamesPlayedSpan.textContent = '0';
+      totalPointsSpan.textContent = '0';
+      maxScoreSpan.textContent = '0';
+      lastScoreSpan.textContent = '0';
+      scoreModal.style.display = 'flex';
+    }
 });
 closeScoreButton.addEventListener('click', () => {
     scoreModal.style.display = 'none';
