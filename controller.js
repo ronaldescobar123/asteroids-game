@@ -1,5 +1,5 @@
 import { asteroids, balas, nave, inicializarAsteroides, disparar, db, hayColision, detectarColision, puntosActuales, sumarPunto, aumentarDificultad, agregarAsteroide, initStats, getStats, updateStats } from "./model.js";
-import { limpiarCanvas, dibujarAsteroide, dibujarNave, dibujarBalas, dibujarPuntaje } from "./view.js";
+import { limpiarCanvas, dibujarAsteroide, dibujarNave, dibujarBalas, dibujarPuntaje, dibujarEstrellas } from "./view.js";
 
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
@@ -18,10 +18,22 @@ inicializarAsteroides(canvas);
 
 let juegoIniciado = false;
 
+let gameOver = false;
+
 initStats().catch(err => console.error('initStats error:', err));
 
 function gameLoop() {
   limpiarCanvas(ctx, canvas);
+
+   if (gameOver) {
+    dibujarEstrellas(ctx, canvas, 200);
+    ctx.fillStyle = "#ffffff";
+    ctx.font = "48px Courier New";
+    ctx.textAlign = "center";
+    ctx.fillText("GAME OVER", canvas.width / 2, canvas.height / 2);
+    requestAnimationFrame(gameLoop);
+    return;
+  }
 
   asteroids.forEach((ast) => {
     ast.x += ast.vx;
@@ -54,8 +66,16 @@ function gameLoop() {
     if (colision) {
       console.log("La nave chocó con un asteroide");
       juegoIniciado = false;
-      menu.style.display = "block";
       updateStats(puntosActuales).catch(err => console.error('updateStats error:', err));
+      
+        gameOver = true;
+        asteroids.length = 0;
+      
+        setTimeout(() => {
+          gameOver = false;
+          menu.style.display = "block";
+          inicializarAsteroides(canvas);
+        }, 2000);
       }
   });
     dibujarNave(ctx, nave);
@@ -91,6 +111,11 @@ startButton.addEventListener("click", () => {
   menu.style.display = "none";
   juegoIniciado = true;
   puntosActuales = 0;
+  if (gameOver) {
+    gameOver = false;
+    asteroids.length = 0;
+    inicializarAsteroides(canvas);
+  }
 });
 scoreButton.addEventListener('click', async () => {
     try {
